@@ -71,6 +71,8 @@ public class MenuPrincipal
             catch (FormatException)
             {
                 Console.WriteLine("Debes introducir valores numéricos");
+            }catch(ArgumentNullException){
+                Console.WriteLine("Valor nulo inválido");
             }
         } while (true);
 
