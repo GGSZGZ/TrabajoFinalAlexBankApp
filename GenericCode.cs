@@ -11,12 +11,25 @@ public class GenericCode
         bool credentials=false;
         bool keyComplete=false;
         BankAccount accountNew=new BankAccount();
-        do{
-        try{
+        bool titularNumerico=false;
+        int intValue;
+        string titular;
         //parametros de usuario
+        do{
         Console.WriteLine("Nombre del titular : ");
-        string titular=Console.ReadLine()!.ToUpper();
+        titular=Console.ReadLine()!.ToUpper();
+    //si lo consigue transformar a numero pedimos que repita
+        if (int.TryParse(titular,out intValue))
+    {
+        Console.WriteLine("Debes introducir un titular válido");
+        titularNumerico=true;
+    }else{
+        titularNumerico=false;
+    }
+        }while(titularNumerico==true);
+        do{
         Console.WriteLine("Balance inicial : ");
+        try{
         int initialBalance=int.Parse(Console.ReadLine()!);
         credentials=true;
         //objeto banco
@@ -27,8 +40,18 @@ public class GenericCode
         }while(credentials==false);
         do{
         //clave diccionario
+        string clave="";
+        bool keyValid=false;
+    do{
+        try{
         Console.WriteLine("Introduce una clave para esta cuenta: ");
-        string clave = Console.ReadLine()!;
+        clave = Console.ReadLine()!;
+        keyValid=false;
+        }catch(FormatException){
+            keyValid=true;
+            Console.WriteLine("La sintaxis es incorrecta");
+        }
+    }while(keyValid==true);
         //si la clave ya existe exigimos una nueva
           if (BankDiccionary.Cuentas.ContainsKey(clave))
         {
