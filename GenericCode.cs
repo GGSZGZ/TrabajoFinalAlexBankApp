@@ -113,22 +113,14 @@ public class GenericCode
         Console.WriteLine("Clave de la cuenta");
         string key=Console.ReadLine()!;
 
-        if (BankDiccionary.Cuentas.ContainsKey(key)){
     // Verificar si el nombre del titular coincide
-    if (BankDiccionary.Cuentas[key].Owner == titular){
+    if (BankDiccionary.Cuentas.ContainsKey(key) && BankDiccionary.Cuentas[key].Owner == titular){
         Console.WriteLine("El nombre del titular coincide con la cuenta.");
         return key;
         
-    }
-    else
-    {
+    }else{
         Console.WriteLine("ERROR");
-       
+       return null!;
     }
-}else{
-    Console.WriteLine("La clave no corresponde a ninguna cuenta.");
-    
-    }
-    return null!;
     }
 }

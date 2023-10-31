@@ -7,7 +7,7 @@ public class MenuPrincipal
         GenericCode cuenta = new GenericCode(); // Crear una instancia de la clase GenericCode
         int opcion = 0;
         int segundaOpcion=0;
-        string key;
+        string key="";
 
         do
         {
@@ -20,7 +20,12 @@ public class MenuPrincipal
                     cuenta.createAccount();
                     break;
                 case 2:
+                
                    key= cuenta.login();
+                
+                if(key==null){
+                    break;
+                }
                    cuenta.writeHistory(key);
                    do{
                     mostrarSegundoMenu();
