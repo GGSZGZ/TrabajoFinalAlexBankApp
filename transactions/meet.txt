@@ -1,1 +1,6 @@
 ctrl + shift + j =beautify json
+cambiar todo a ingles
+refactorizar:
+    una clase con operaciones bancarias solo,
+    otra la de path meter tambien los metodos de json y llamarla JsonPath
+    otra con credenciales solo , como el login y createaccount
