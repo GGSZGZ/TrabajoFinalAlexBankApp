@@ -4,7 +4,7 @@ public class MenuPrincipal
     {
         //no puedo llamar metodos no estaticos dentro de uno estatico por ello me creo un objeto de la propia clase
         MenuPrincipal menu = new MenuPrincipal();
-        GenericCode cuenta = new GenericCode();
+        BasicBankOperations cuenta = new BasicBankOperations();
         Credentials credentials= new Credentials();
         int opcion = 0;
         int segundaOpcion=0;
@@ -115,7 +115,7 @@ public class MenuPrincipal
 
 
     public void menuBancario(int segundaOpcion,string key){
-        GenericCode operatingAccount= new GenericCode();
+        BasicBankOperations operatingAccount= new BasicBankOperations();
         switch (segundaOpcion)
             {
                 case 1:

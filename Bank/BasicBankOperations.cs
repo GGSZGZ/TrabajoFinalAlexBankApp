@@ -3,7 +3,7 @@ using Models;
 
 
 // Clase que contiene los métodos relacionados con la cuenta bancaria
-public class GenericCode
+public class BasicBankOperations
 {
     public void depositMoney(string key)
     {

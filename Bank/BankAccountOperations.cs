@@ -61,14 +61,9 @@ public BankAccount(){
     }
 
      public void readJsonHistory(){
-        //read the json
-            
-            string jsonString = File.ReadAllText(Path.filePath + Owner + ".json");
 
-                
+            string jsonString = File.ReadAllText(Path.filePath + Owner + ".json");
                 // Realizar la deserialización del JSON a mi modelo transacciones
-            
-              
                 var historyJson = JsonSerializer.Deserialize<Transaction[]>(jsonString);
 
 
