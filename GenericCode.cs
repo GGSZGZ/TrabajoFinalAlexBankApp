@@ -88,11 +88,7 @@ public class GenericCode
         BankDiccionary.Cuentas[key].MakeWithdrawal(retiro,DateTime.Now,note);
     }
 
-    // public void operationHistory(string key)
-    // {
-    //    Console.WriteLine(BankDiccionary.Cuentas[key].GetAccountHistory());
-    // }
-
+    
 
 //leer y escribir jsons
     public void writeHistory(string key)
