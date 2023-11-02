@@ -8,7 +8,6 @@ public class BankAccount{
 // public int numerico {get;private set;}
 
     
-    public int numerico {get;set;}
     public string? Number{get;set;}
     public string? Owner{get;set;}
 
@@ -38,8 +37,8 @@ public BankAccount(){
         this.Number="1";
         MakeDeposit(balance,DateTime.Now,"First deposit");
     }
-    public void MakeDeposit(decimal amount,DateTime date,string note,bool ingresaNegativo=false){
-        if(amount<0 && ingresaNegativo==false)return;
+    public void MakeDeposit(decimal amount,DateTime date,string note,bool negativeIncome=false){
+        if(amount<0 && negativeIncome==false)return;
         var deposit=new Transaction(amount,date,note);
         transactions.Add(deposit);
     }

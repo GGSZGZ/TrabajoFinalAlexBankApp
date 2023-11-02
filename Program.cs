@@ -1,2 +1,2 @@
 ﻿
-        MenuPrincipal.IniciarMenu();
+        MainMenu.BeginMenu();

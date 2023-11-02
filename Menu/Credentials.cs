@@ -7,41 +7,41 @@ public class Credentials{
         bool credentials=false;
         bool keyComplete=false;
         BankAccount accountNew=new BankAccount();
-        bool titularNumerico=false;
+        bool numericHolder=false;
         int intValue;
-        string titular;
+        string accountHolder;
         //parametros de usuario
         do{
         Console.WriteLine("Nombre del titular : ");
-        titular=Console.ReadLine()!.ToUpper();
+        accountHolder=Console.ReadLine()!.ToUpper();
     //si lo consigue transformar a numero pedimos que repita
-        if (int.TryParse(titular,out intValue))
+        if (int.TryParse(accountHolder,out intValue))
     {
         Console.WriteLine("Debes introducir un titular válido");
-        titularNumerico=true;
+        numericHolder=true;
     }else{
-        titularNumerico=false;
+        numericHolder=false;
     }
-        }while(titularNumerico==true);
+        }while(numericHolder==true);
         do{
         Console.WriteLine("Balance inicial : ");
         try{
         int initialBalance=int.Parse(Console.ReadLine()!);
         credentials=true;
         //objeto banco
-        accountNew=new BankAccount(titular,initialBalance);
+        accountNew=new BankAccount(accountHolder,initialBalance);
         }catch(FormatException){
             Console.WriteLine("Debes introducir valores válidos");
         }
         }while(credentials==false);
         do{
         //clave diccionario
-        string clave="";
+        string key="";
         bool keyValid=false;
     do{
         try{
         Console.WriteLine("Introduce una clave para esta cuenta: ");
-        clave = Console.ReadLine()!;
+        key = Console.ReadLine()!;
         keyValid=false;
         }catch(FormatException){
             keyValid=true;
@@ -49,13 +49,13 @@ public class Credentials{
         }
     }while(keyValid==true);
         //si la clave ya existe exigimos una nueva
-          if (BankDiccionary.diccionarioCuentas.ContainsKey(clave))
+          if (BankDiccionary.dictionaryAccounts.ContainsKey(key))
         {
             Console.WriteLine("La clave ya está en uso. Por favor, utiliza una clave diferente.");
         }
         else
         {
-            BankDiccionary.diccionarioCuentas.Add(clave, accountNew);
+            BankDiccionary.dictionaryAccounts.Add(key, accountNew);
             Console.WriteLine("Cuenta creada exitosamente.");
             keyComplete=true;
         }
@@ -65,12 +65,12 @@ public class Credentials{
 
     public string login(){
          Console.WriteLine("Dime el nombre del titular");
-        string titular=Console.ReadLine()!.ToUpper();
+        string holder=Console.ReadLine()!.ToUpper();
         Console.WriteLine("Clave de la cuenta");
         string key=Console.ReadLine()!;
 
     // Verificar si el nombre del titular coincide
-    if (BankDiccionary.diccionarioCuentas.ContainsKey(key) && BankDiccionary.diccionarioCuentas[key].Owner == titular){
+    if (BankDiccionary.dictionaryAccounts.ContainsKey(key) && BankDiccionary.dictionaryAccounts[key].Owner == holder){
         Console.WriteLine("El nombre del titular coincide con la cuenta.");
         return key;
         

@@ -1,3 +1,2 @@
 ctrl + shift + j =beautify json
-cambiar todo a ingles
 controlar sacar dinero en negativo

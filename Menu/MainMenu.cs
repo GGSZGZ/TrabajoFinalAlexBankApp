@@ -1,21 +1,21 @@
-public class MenuPrincipal
+public class MainMenu
 {
-    public static void IniciarMenu()
+    public static void BeginMenu()
     {
         //no puedo llamar metodos no estaticos dentro de uno estatico por ello me creo un objeto de la propia clase
-        MenuPrincipal menu = new MenuPrincipal();
-        BasicBankOperations cuenta = new BasicBankOperations();
+        MainMenu menu = new MainMenu();
+        BasicBankOperations account = new BasicBankOperations();
         Credentials credentials= new Credentials();
-        int opcion = 0;
-        int segundaOpcion=0;
+        int option = 0;
+        int secondOption=0;
         string key="";
 
         do
         {
-            MostrarMenu();
-            opcion = LeerOpcion();
+            ShowMenu();
+            option = ReadOption();
 
-            switch (opcion)
+            switch (option)
             {
                 case 1:
                     credentials.createAccount();
@@ -27,19 +27,19 @@ public class MenuPrincipal
                 if(key==null){
                     break;
                 }
-                   cuenta.writeHistory(key);
+                   account.writeHistory(key);
                    do{
-                    mostrarSegundoMenu();
-                    segundaOpcion = leerSegundaOpcion();
-                    menu.menuBancario(segundaOpcion,key);
-                   }while(segundaOpcion!=4);
+                    ShowSecondMenu();
+                    secondOption = ReadSecondOption();
+                    menu.BankMenu(secondOption,key);
+                   }while(secondOption!=4);
                     break;
                
             }
-        } while (opcion != 3);
+        } while (option != 3);
     }
 
-    private static void MostrarMenu()
+    private static void ShowMenu()
     {
         Console.WriteLine("1-Crear cuenta");
         Console.WriteLine("2-Iniciar sesión");
@@ -47,7 +47,7 @@ public class MenuPrincipal
          Console.WriteLine("Elige una opción: ");
         
     }
-    private static void mostrarSegundoMenu()
+    private static void ShowSecondMenu()
     {
         Console.WriteLine("1-Ingresar dinero");
         Console.WriteLine("2-Sacar dinero");
@@ -56,16 +56,16 @@ public class MenuPrincipal
          Console.WriteLine("Elige una opción: ");
     }
 
-    private static int LeerOpcion()
+    private static int ReadOption()
     {
-        int opcion;
+        int option;
         do
         {
             try
             {
                
-                opcion = int.Parse(Console.ReadLine()!);
-                if (opcion <= 0 || opcion > 3)
+                option = int.Parse(Console.ReadLine()!);
+                if (option <= 0 || option > 3)
                 {
                     Console.WriteLine("Debes introducir valores comprendidos entre 1 y 3");
                 }
@@ -82,20 +82,20 @@ public class MenuPrincipal
             }
         } while (true);
 
-        return opcion;
+        return option;
     }
 
 
-     private static int leerSegundaOpcion()
+     private static int ReadSecondOption()
     {
-        int opcion;
+        int option;
                
         do
         {
             try
             {
-                opcion = int.Parse(Console.ReadLine()!);
-                if (opcion <= 0 || opcion > 4)
+                option = int.Parse(Console.ReadLine()!);
+                if (option <= 0 || option > 4)
                 {
                     Console.WriteLine("Debes introducir valores comprendidos entre 1 y 4");
                 }
@@ -110,13 +110,13 @@ public class MenuPrincipal
             }
         } while (true);
 
-        return opcion;
+        return option;
     }
 
 
-    public void menuBancario(int segundaOpcion,string key){
+    public void BankMenu(int secondOption,string key){
         BasicBankOperations operatingAccount= new BasicBankOperations();
-        switch (segundaOpcion)
+        switch (secondOption)
             {
                 case 1:
                 operatingAccount.depositMoney(key);

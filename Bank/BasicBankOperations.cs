@@ -12,7 +12,7 @@ public class BasicBankOperations
         decimal ingreso=int.Parse(Console.ReadLine()!);
         Console.WriteLine("Motivo :");
         string note=Console.ReadLine()!;
-        BankDiccionary.diccionarioCuentas[key].MakeDeposit(ingreso,DateTime.Now,note);
+        BankDiccionary.dictionaryAccounts[key].MakeDeposit(ingreso,DateTime.Now,note);
 
 
     }
@@ -23,7 +23,7 @@ public class BasicBankOperations
         decimal retiro=int.Parse(Console.ReadLine()!);
         Console.WriteLine("Motivo :");
         string note=Console.ReadLine()!;
-        BankDiccionary.diccionarioCuentas[key].MakeWithdrawal(retiro,DateTime.Now,note);
+        BankDiccionary.dictionaryAccounts[key].MakeWithdrawal(retiro,DateTime.Now,note);
     }
 
     
@@ -31,11 +31,11 @@ public class BasicBankOperations
 //leer y escribir jsons
     public void writeHistory(string key)
     {
-       BankDiccionary.diccionarioCuentas[key].writeJsonHistory();
+       BankDiccionary.dictionaryAccounts[key].writeJsonHistory();
     }
 
     public void readHistory(string key)
     {
-       BankDiccionary.diccionarioCuentas[key].readJsonHistory();;
+       BankDiccionary.dictionaryAccounts[key].readJsonHistory();;
     }
 }
