@@ -24,7 +24,6 @@ public class BankAccount{
         }
     }
     //static los objetos de la misma clase comparten este mismo objeto
-    private static int accountNumber_seed=1000;
 
     private List<Transaction>transactions=new List<Transaction>();
 
@@ -33,18 +32,11 @@ public BankAccount(){
 }
  public BankAccount(string owner){
         this.Owner=owner;
-        this.Number=accountNumber_seed.ToString();   
-        accountNumber_seed++;    
-        //this.Balance=0; 
-
     }
     public BankAccount(string owner,decimal balance=0){
         this.Owner=owner;
-
-        accountNumber_seed++;
         this.Number="1";
         MakeDeposit(balance,DateTime.Now,"First deposit");
-        //this.Balance=balance;
     }
     public void MakeDeposit(decimal amount,DateTime date,string note,bool ingresaNegativo=false){
         if(amount<0 && ingresaNegativo==false)return;
@@ -58,14 +50,6 @@ public BankAccount(){
         transactions.Add(deposit);
 
     }
-
-
-
-    public override string ToString(){
-        //si no tiene nada devuelve null 
-        return Owner ?? "No Owner";
-    }
-
 
      public void writeJsonHistory(){
     

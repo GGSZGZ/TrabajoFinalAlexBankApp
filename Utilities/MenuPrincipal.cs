@@ -4,7 +4,8 @@ public class MenuPrincipal
     {
         //no puedo llamar metodos no estaticos dentro de uno estatico por ello me creo un objeto de la propia clase
         MenuPrincipal menu = new MenuPrincipal();
-        GenericCode cuenta = new GenericCode(); // Crear una instancia de la clase GenericCode
+        GenericCode cuenta = new GenericCode();
+        Credentials credentials= new Credentials();
         int opcion = 0;
         int segundaOpcion=0;
         string key="";
@@ -17,11 +18,11 @@ public class MenuPrincipal
             switch (opcion)
             {
                 case 1:
-                    cuenta.createAccount();
+                    credentials.createAccount();
                     break;
                 case 2:
                 
-                   key= cuenta.login();
+                   key= credentials.login();
                     
                 if(key==null){
                     break;
@@ -135,4 +136,3 @@ public class MenuPrincipal
             }
     }
 }
-
