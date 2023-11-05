@@ -2,6 +2,7 @@ namespace Models;
 using System.Text.Json;
 
 using System.Text;
+using Spectre.Console;
 
 public class BankAccount{
 //puedo personalizar si quiero el get o set private solo
@@ -44,9 +45,13 @@ public BankAccount(){
     }
 
     public void MakeWithdrawal(decimal amount,DateTime date,string note){
-
+        //controlar que no saque mas de lo que tengo
+        if(Balance-amount<0){
+            AnsiConsole.MarkupLine("[red]No tienes suficiente dinero![/]");
+        }else{
         var deposit=new Transaction(-amount,date,note);
         transactions.Add(deposit);
+        }
 
     }
 

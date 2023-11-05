@@ -1,41 +1,57 @@
-using System;
+using Spectre.Console;
 using Models;
 
-
-// Clase que contiene los métodos relacionados con la cuenta bancaria
 public class BasicBankOperations
 {
-    public void depositMoney(string key)
+    public void DepositMoney(string key)
+{
+    var ingreso = AnsiConsole.Prompt(
+        new TextPrompt<decimal>("¿Cuánto dinero deseas depositar? ")
+            .PromptStyle(new Style(foreground: Color.Green))
+            .Validate(amount =>
+            {
+                if (amount <= 0)
+                {
+                    return ValidationResult.Error("El monto debe ser mayor que cero.");
+                }
+                return ValidationResult.Success();
+            }));
+
+    var note = AnsiConsole.Prompt(new TextPrompt<string>("Motivo: ")
+        .PromptStyle(new Style(foreground: Color.Green)))
+        .ToString();
+
+    BankDiccionary.dictionaryAccounts[key].MakeDeposit(ingreso, DateTime.Now, note);
+}
+
+
+    public void Withdrawal(string key)
     {
+        var retiro = AnsiConsole.Prompt(
+            new TextPrompt<decimal>("¿Cuánto dinero deseas retirar? ")
+                .ValidationErrorMessage("[red]El monto debe ser mayor que cero.[/]")
+                .PromptStyle(Style.Parse("green"))
+                .Validate(amount =>
+                {
+                    if (amount <= 0)
+                    {
+                        return ValidationResult.Error();
+                    }
+                    return ValidationResult.Success();
+                }));
 
-        Console.WriteLine("¿Cuanto dinero deseas depositar?");
-        decimal ingreso=int.Parse(Console.ReadLine()!);
-        Console.WriteLine("Motivo :");
-        string note=Console.ReadLine()!;
-        BankDiccionary.dictionaryAccounts[key].MakeDeposit(ingreso,DateTime.Now,note);
+        var note = AnsiConsole.Prompt(new TextPrompt<string>("Motivo: ").PromptStyle(Style.Parse("green"))).ToString();
 
-
+        BankDiccionary.dictionaryAccounts[key].MakeWithdrawal(retiro, DateTime.Now, note);
     }
 
-    public void withDrawal(string key)
+    public void WriteHistory(string key)
     {
-         Console.WriteLine("¿Cuanto dinero deseas retirar?");
-        decimal retiro=int.Parse(Console.ReadLine()!);
-        Console.WriteLine("Motivo :");
-        string note=Console.ReadLine()!;
-        BankDiccionary.dictionaryAccounts[key].MakeWithdrawal(retiro,DateTime.Now,note);
+        BankDiccionary.dictionaryAccounts[key].writeJsonHistory();
     }
 
-    
-
-//leer y escribir jsons
-    public void writeHistory(string key)
+    public void ReadHistory(string key)
     {
-       BankDiccionary.dictionaryAccounts[key].writeJsonHistory();
-    }
-
-    public void readHistory(string key)
-    {
-       BankDiccionary.dictionaryAccounts[key].readJsonHistory();;
+        BankDiccionary.dictionaryAccounts[key].readJsonHistory();
     }
 }

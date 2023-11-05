@@ -1,82 +1,82 @@
-using System;
+using Spectre.Console;
 using Models;
 
-public class Credentials{
-    public void createAccount()
+public class Credentials
+{
+    public void CreateAccount()
     {
-        bool credentials=false;
-        bool keyComplete=false;
-        BankAccount accountNew=new BankAccount();
-        bool numericHolder=false;
-        int intValue;
+        BankAccount accountNew;
         string accountHolder;
-        //parametros de usuario
-        do{
-        Console.WriteLine("Nombre del titular : ");
-        accountHolder=Console.ReadLine()!.ToUpper();
-    //si lo consigue transformar a numero pedimos que repita
-        if (int.TryParse(accountHolder,out intValue))
-    {
-        Console.WriteLine("Debes introducir un titular válido");
-        numericHolder=true;
-    }else{
-        numericHolder=false;
-    }
-        }while(numericHolder==true);
-        do{
-        Console.WriteLine("Balance inicial : ");
-        try{
-        int initialBalance=int.Parse(Console.ReadLine()!);
-        credentials=true;
-        //objeto banco
-        accountNew=new BankAccount(accountHolder,initialBalance);
-        }catch(FormatException){
-            Console.WriteLine("Debes introducir valores válidos");
-        }
-        }while(credentials==false);
-        do{
-        //clave diccionario
-        string key="";
-        bool keyValid=false;
-    do{
-        try{
-        Console.WriteLine("Introduce una clave para esta cuenta: ");
-        key = Console.ReadLine()!;
-        keyValid=false;
-        }catch(FormatException){
-            keyValid=true;
-            Console.WriteLine("La sintaxis es incorrecta");
-        }
-    }while(keyValid==true);
-        //si la clave ya existe exigimos una nueva
-          if (BankDiccionary.dictionaryAccounts.ContainsKey(key))
+        int initialBalance;
+        string key;
+
+        do
         {
-            Console.WriteLine("La clave ya está en uso. Por favor, utiliza una clave diferente.");
+            accountHolder = AnsiConsole.Prompt(
+                new TextPrompt<string>("Nombre del titular : ").Validate(name =>
+                {
+                    if (int.TryParse(name, out _))
+                    {
+                        return ValidationResult.Error("Debes introducir un titular válido");
+                    }
+                    return ValidationResult.Success();
+                })).ToUpper();
+        } while (int.TryParse(accountHolder, out _));
+
+        do
+        {
+            initialBalance = AnsiConsole.Prompt(
+                new TextPrompt<int>("Balance inicial : ").PromptStyle("green").Validate(balance =>
+                {
+                    if (balance <= 0)
+                    {
+                        return ValidationResult.Error("Debes introducir un balance inicial válido");
+                    }
+                    return ValidationResult.Success();
+                }));
+            try
+            {
+                accountNew = new BankAccount(accountHolder, initialBalance);
+            }
+            catch (FormatException)
+            {
+                AnsiConsole.MarkupLine("[red]Debes introducir valores válidos[/]");
+                continue;
+            }
+            break;
+        } while (true);
+
+        do
+        {
+            key = AnsiConsole.Prompt(new TextPrompt<string>("Introduce una clave para esta cuenta: ").PromptStyle("blue")).ToString();
+
+            if (BankDiccionary.dictionaryAccounts.ContainsKey(key))
+            {
+                AnsiConsole.MarkupLine("[red]La clave ya está en uso. Por favor, utiliza una clave diferente.[/]");
+            }
+            else
+            {
+                BankDiccionary.dictionaryAccounts.Add(key, accountNew);
+                AnsiConsole.MarkupLine("[green]Cuenta creada exitosamente.[/]");
+                break;
+            }
+        } while (true);
+    }
+
+    public string Login()
+    {
+        string holder = AnsiConsole.Prompt(new TextPrompt<string>("Dime el nombre del titular : ").PromptStyle("green")).ToString().ToUpper();
+        string key = AnsiConsole.Prompt(new TextPrompt<string>("Clave de la cuenta : ").PromptStyle("green")).ToString();
+
+        if (BankDiccionary.dictionaryAccounts.ContainsKey(key) && BankDiccionary.dictionaryAccounts[key].Owner == holder)
+        {
+            AnsiConsole.MarkupLine("[green]El nombre del titular coincide con la cuenta.[/]");
+            return key;
         }
         else
         {
-            BankDiccionary.dictionaryAccounts.Add(key, accountNew);
-            Console.WriteLine("Cuenta creada exitosamente.");
-            keyComplete=true;
+            AnsiConsole.MarkupLine("[red]ERROR[/]");
+            return null!;
         }
-        }while(keyComplete==false);
-
-    }
-
-    public string login(){
-         Console.WriteLine("Dime el nombre del titular");
-        string holder=Console.ReadLine()!.ToUpper();
-        Console.WriteLine("Clave de la cuenta");
-        string key=Console.ReadLine()!;
-
-    // Verificar si el nombre del titular coincide
-    if (BankDiccionary.dictionaryAccounts.ContainsKey(key) && BankDiccionary.dictionaryAccounts[key].Owner == holder){
-        Console.WriteLine("El nombre del titular coincide con la cuenta.");
-        return key;
-        
-    }else{
-        Console.WriteLine("ERROR");
-       return null!;
-    }
     }
 }
