@@ -1,14 +1,16 @@
+using Spectre.Console;
+using System;
+
 public class MainMenu
 {
+    private static BasicBankOperations account = new BasicBankOperations();
+    private static Credentials credentials = new Credentials();
+    private static string key = "";
+
     public static void BeginMenu()
     {
-        //no puedo llamar metodos no estaticos dentro de uno estatico por ello me creo un objeto de la propia clase
-        MainMenu menu = new MainMenu();
-        BasicBankOperations account = new BasicBankOperations();
-        Credentials credentials= new Credentials();
-        int option = 0;
-        int secondOption=0;
-        string key="";
+        var option = 0;
+        var secondOption = 0;
 
         do
         {
@@ -18,56 +20,89 @@ public class MainMenu
             switch (option)
             {
                 case 1:
-                    credentials.createAccount();
+                    credentials.CreateAccount();
                     break;
                 case 2:
-                
-                   key= credentials.login();
-                    
-                if(key==null){
+                    key = credentials.Login();
+
+                    if (key == null)
+                    {
+                        break;
+                    }
+                    account.WriteHistory(key);
+                    do
+                    {
+                        ShowSecondMenu();
+                        secondOption = ReadSecondOption();
+                        BankMenu(secondOption, key);
+                    } while (secondOption != 4);
                     break;
-                }
-                   account.writeHistory(key);
-                   do{
-                    ShowSecondMenu();
-                    secondOption = ReadSecondOption();
-                    menu.BankMenu(secondOption,key);
-                   }while(secondOption!=4);
-                    break;
-               
             }
         } while (option != 3);
     }
 
     private static void ShowMenu()
-    {
-        Console.WriteLine("1-Crear cuenta");
-        Console.WriteLine("2-Iniciar sesión");
-        Console.WriteLine("3-Salir");
-         Console.WriteLine("Elige una opción: ");
-        
-    }
-    private static void ShowSecondMenu()
-    {
-        Console.WriteLine("1-Ingresar dinero");
-        Console.WriteLine("2-Sacar dinero");
-        Console.WriteLine("3-Listado de operaciones");
-        Console.WriteLine("4-Salir");
-         Console.WriteLine("Elige una opción: ");
-    }
+{
+    AnsiConsole.MarkupLine(@"[yellow]1:[/] [bold]Crear cuenta[/]");
+    AnsiConsole.MarkupLine(@"[yellow]2:[/] [bold]Iniciar sesión[/]");
+    AnsiConsole.MarkupLine(@"[yellow]3:[/] [bold]Salir[/]");
+    Console.Write("Elige una opción: ");
+}
+
+private static void ShowSecondMenu()
+{
+    
+        AnsiConsole.MarkupLine("[yellow]1:[/] [bold]Depositar dinero[/]");
+        AnsiConsole.MarkupLine("[yellow]2:[/] [bold]Retirar dinero[/]");
+        AnsiConsole.MarkupLine("[yellow]3:[/] [bold]Listado de operaciones[/]");
+        AnsiConsole.MarkupLine("[yellow]4:[/] [bold]Salir[/]");
+        Console.Write("Elige una opción: ");
+}
+
+
+    
 
     private static int ReadOption()
+{
+    int option;
+    do
+    {
+        try
+        {
+            option = int.Parse(Console.ReadLine()!);
+            if (option <= 0 || option > 3)
+            {
+                AnsiConsole.MarkupLine("[red]Debes introducir un valor entre 1 y 3[/]");
+            }
+            else
+            {
+                break;
+            }
+        }
+        catch (FormatException)
+        {
+            AnsiConsole.MarkupLine("[red]Debes introducir un valor numérico[/]");
+        }
+    } while (true);
+
+    return option;
+}
+
+
+    private static int ReadSecondOption()
     {
         int option;
+
         do
         {
             try
             {
-               
                 option = int.Parse(Console.ReadLine()!);
-                if (option <= 0 || option > 3)
+
+                if (option < 1 || option > 4)
                 {
-                    Console.WriteLine("Debes introducir valores comprendidos entre 1 y 3");
+                    
+                    AnsiConsole.MarkupLine("[red]Debes introducir valores comprendidos entre 1 y 4[/]");
                 }
                 else
                 {
@@ -76,63 +111,29 @@ public class MainMenu
             }
             catch (FormatException)
             {
-                Console.WriteLine("Debes introducir valores numéricos");
-            }catch(ArgumentNullException){
-                Console.WriteLine("Valor nulo inválido");
+                AnsiConsole.MarkupLine("[red]Debes introducir valores numéricos[/]");
             }
         } while (true);
 
         return option;
     }
 
-
-     private static int ReadSecondOption()
+    private static void BankMenu(int secondOption, string key)
     {
-        int option;
-               
-        do
-        {
-            try
-            {
-                option = int.Parse(Console.ReadLine()!);
-                if (option <= 0 || option > 4)
-                {
-                    Console.WriteLine("Debes introducir valores comprendidos entre 1 y 4");
-                }
-                else
-                {
-                    break;
-                }
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Debes introducir valores numéricos");
-            }
-        } while (true);
-
-        return option;
-    }
-
-
-    public void BankMenu(int secondOption,string key){
-        BasicBankOperations operatingAccount= new BasicBankOperations();
+        BasicBankOperations operatingAccount = new BasicBankOperations();
         switch (secondOption)
-            {
-                case 1:
-                operatingAccount.depositMoney(key);
-                //cada operacion la guardo en el json
-                operatingAccount.writeHistory(key);
-                    break;
-                case 2:
-                operatingAccount.withDrawal(key);
-                operatingAccount.writeHistory(key);
-                    break;
-                case 3:
-                //    operatingAccount.operationHistory(key);
-                   operatingAccount.readHistory(key);
-                    break;
-                
-               
-            }
+        {
+            case 1:
+                operatingAccount.DepositMoney(key);
+                operatingAccount.WriteHistory(key);
+                break;
+            case 2:
+                operatingAccount.Withdrawal(key);
+                operatingAccount.WriteHistory(key);
+                break;
+            case 3:
+                operatingAccount.ReadHistory(key);
+                break;
+        }
     }
 }
