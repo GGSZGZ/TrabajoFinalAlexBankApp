@@ -58,7 +58,7 @@ public BankAccount(){
      public void writeJsonHistory(){
     
         //to a json with the owner's name
-        string fileName = Path.filePath + Owner + ".json"; 
+        string fileName = Path.FilePath + Owner + ".json"; 
         string jsonString = JsonSerializer.Serialize(transactions);
         File.WriteAllText(fileName, jsonString);
         
@@ -66,7 +66,7 @@ public BankAccount(){
 
      public void readJsonHistory(){
 
-            string jsonString = File.ReadAllText(Path.filePath + Owner + ".json");
+            string jsonString = File.ReadAllText(Path.FilePath + Owner + ".json");
                 // Realizar la deserialización del JSON a mi modelo transacciones
                 var historyJson = JsonSerializer.Deserialize<Transaction[]>(jsonString);
 
